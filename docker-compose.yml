@@ -1,0 +1,60 @@
+version: '3.7'
+
+x-converter-context: &converter-context
+  context: .
+  dockerfile: Dockerfile.dev
+
+x-converter-env: &converter-env
+  DATABASE_URL: "postgresql://postgres@db/converter_development"
+  RAILS_LOG_TO_STDOUT: "true"
+  RAILS_SERVE_STATIC_FILES: "true"
+  RAILS_ENV: development
+  SECRET_KEY_BASE: ""
+  DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: 'true'
+  NODE_ENV: development
+
+x-converter-volumes: &converter-volumes
+  volumes:
+    - bundle:/usr/local/bundle:cached
+    - .:/app:cached
+
+services:
+  db:
+    image: postgres:10-alpine
+    environment:
+      PGPASSWORD_SUPERUSER: postgres
+      PGPASSWORD_ADMIN: postgres
+      PGPASSWORD_STANDBY: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  converter:
+    <<: *converter-volumes
+    build:
+      <<: *converter-context
+    environment:
+      <<: *converter-env
+    command: ash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
+    depends_on:
+      - db
+    ports:
+      - "8080:3000"
+
+  webpacker:
+    <<: *converter-volumes
+    build:
+      <<: *converter-context
+    environment:
+      <<: *converter-env
+    command: ash -c "yarn && ./bin/webpack-dev-server --progress —colors --host 0.0.0.0"
+    depends_on:
+      - converter
+    ports:
+      - '3035:3035'
+
+volumes:
+  dbdata:
+  bundle:
