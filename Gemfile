@@ -52,7 +52,9 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data'
-
-gem "dry-monads", "~> 1.3"
 gem "mimemagic", "~> 0.3.8"
 gem "nokogiri", "~> 1.11"
+
+gem "dry-monads", "~> 1.3"
+
+gem "dry-initializer", "~> 3.0"
