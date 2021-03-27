@@ -1,7 +1,7 @@
 <h1>Converter#new</h1>
 <p>Find me in app/views/converter/new.html.erb</p>
 
-<%= form_with url: converter_convert_path, multipart: true do |form| %>
-  <%= form.file_field :file %>
-  <%= form.submit "Submit" %>
+<%= form_with url: converter_add_exam_info_path, multipart: true, local: true do |form| %>
+  <%= form.file_field :file, class: "form-control" %>
+  <%= form.submit "Submit", class:"btn btn-primary" %>
 <% end %>

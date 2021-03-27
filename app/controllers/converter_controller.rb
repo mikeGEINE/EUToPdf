@@ -9,13 +9,22 @@ class ConverterController < ApplicationController
   def new 
   end
 
-  def convert
+  def add_exam_info
     doc = yield get_file(params[:file])
     table = yield extract_table(doc)
-    cookies[:header] = extract_header(table)
+    cookies[:discs] = extract_header(table)
 
     cookies[:students] = extract_students(table)
     @res = cookies[:students]
+  end
+
+  def choose_electives
+    cookies[:discs] = update_discs
+    @res = cookies[:discs]
+  end
+
+  def personal_teachers
+    
   end
 
   private
@@ -51,8 +60,9 @@ class ConverterController < ApplicationController
     header.map do |disc|
       res = disc
       if res[:value].include? '/'
+        cookies[:electives] = true
         names = res[:value].split ' / '
-        res = names.map { |name| { id: res[:id], value: name } }
+        res = names.map.with_index { |name, i| { id: res[:id] + "_#{i}", value: name } }
       end
       res
     end.flatten
@@ -63,6 +73,15 @@ class ConverterController < ApplicationController
       { name: row.css("td div[class='student-fio'] span[title='']").text,
         marks: row.css("td[class*='disc_1']", "td[class*='disc_2']", "td[class*='disc_8']")
                   .map { |mark| { id: mark['class'][/disc_\S+/], mark: mark.text[/[а-яА-Я]+/] } } }
+    end
+  end
+
+  def update_discs
+    cookies[:discs].split('&').map! do |str|
+      String.try_convert(str)
+      # disc[:teacher] = params["#{disc[:id]}_teach".to_sym]
+      # disc[:date] = params["#{disc[:id]}_date".to_sym]
+      # disc[:hours] = params["#{disc[:id]}_hours".to_sym]
     end
   end
 end
