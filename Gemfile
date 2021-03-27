@@ -58,3 +58,5 @@ gem "nokogiri", "~> 1.11"
 gem "dry-monads", "~> 1.3"
 
 gem "dry-initializer", "~> 3.0"
+
+gem 'bootstrap', '~> 5.0.0.beta2'
