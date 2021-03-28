@@ -1,7 +1,47 @@
 <h1>Converter#convert</h1>
 <p>Find me in app/views/converter/convert.html.erb</p>
 
-<%= @res%>
-
-
-
+<% if @discs.present?%>
+  <% @students.each do |student|%>
+    <% marks = student[:marks] %>
+    <strong><%= student[:name]%></strong>
+    <div class="row">
+      <div class="col">
+        <% exams = @discs.select { |disc| (disc[:id].include? 'disc_1') || (disc[:id].include? 'disc_8') }.sort_by { |disc| disc[:date]}%>
+        <table class="table table-bordered">
+          <% exams.each.with_index(1) do |disc, i|%>
+            <tr>
+              <td class="w-10mm"><%= i %></td>
+              <td><%= disc[:value] %></td>
+              <td><%= disc[:hours]%></td>
+              <td><%= marks.select { |mark| mark[:id].eql? disc[:id] }.first[:mark] %></td>
+              <td><%= disc[:date]%></td>
+              <td>&nbsp;</td>
+              <td><%= disc[:teacher].present? ? disc[:teacher] : marks.select { |mark| mark[:id].eql? disc[:id] }.first[:teacher]%></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+      <div class="col">
+        <% tests = student[:marks].select { |disc| disc[:id].include? 'disc_2'}%>
+        <table class="table table-bordered">
+        <% p student[:name]%>
+          <% tests.each.with_index(1) do |t, i|%>
+          <% disc = @discs.select { |disc| disc[:id].eql? t[:id] }.first%>
+          <% if disc.present?%>
+              <tr>
+                <td><%= i %></td>
+                <td><%= disc[:value] %></td>
+                <td><%= disc[:hours]%></td>
+                <td><%= marks.select { |mark| mark[:id].eql? disc[:id] }.first[:mark] %></td>
+                <td><%= disc[:date]%></td>
+                <td>&nbsp;</td>
+                <td><%= disc[:teacher].present? ? disc[:teacher] : marks.select { |mark| mark[:id].eql? disc[:id] }.first[:teacher]%></td>
+              </tr>
+            <% end%>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  <%end%>
+<% end %>

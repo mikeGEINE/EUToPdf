@@ -12,6 +12,8 @@ app-build:
 
 app-up:
 	docker-compose up
+app-debug:
+	docker-compose run --rm converter bundle exec rdebug-ide --debug --host 0.0.0.0 --port 1234 -- bin/rails server -p 3000 -b 0.0.0.0
 
 app-converter-ash:
 	docker-compose run --rm converter ash
