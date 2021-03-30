@@ -1,2 +1,46 @@
-<h1>Converter#convert</h1>
-<p>Find me in app/views/converter/convert.html.erb</p>
+<h1>Printable tables</h1>
+<p>Hit 'Ctrl+P' or use another printing tool in your browser to print this tables</p>
+
+<% if @discs.present?%>
+  <% @students.each do |student|%>
+    <% marks = student[:marks] %>
+    <strong><%= student[:name]%></strong>
+    <div class="row" style="float: none; display: block">
+      <div class="col" style="position: relative; page-break-before: auto; display: block; page-break-inside: avoid">
+        <% exams = @discs.select { |disc| (disc[:id].include? 'disc_1') || (disc[:id].include? 'disc_8') }.sort_by { |disc| disc[:date]}%>
+        <table class="table table-bordered border-dark" style="table-layout: fixed; font-size: 6px; max-width: 120mm">
+          <% exams.each.with_index(1) do |disc, i|%>
+            <tr style="height: 7mm">
+              <td style="width: 7mm; padding: 4px"><%= i %></td>
+              <td style="width: 29mm; padding: 4px"><%= disc[:value] %></td>
+              <td style="width: 15mm; padding: 4px"><%= disc[:hours]%></td>
+              <td style="width: 13mm; padding: 4px"><%= marks.select { |mark| mark[:id].eql? disc[:id] }.first[:mark] %></td>
+              <td style="width: 15mm; padding: 4px"><%= disc[:date]%></td>
+              <td style="width: 21mm; padding: 4px">&nbsp;</td>
+              <td style="width: 20mm; padding: 4px"><%= disc[:teacher].present? ? disc[:teacher] : marks.select { |mark| mark[:id].eql? disc[:id] }.first[:teacher]%></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+      <div class="col" style="position: relative; page-break-before: auto; display: block; page-break-inside: avoid">
+        <% tests = student[:marks].select { |disc| disc[:id].include? 'disc_2'}%>
+        <table class="table table-bordered border-dark" style="table-layout: fixed; font-size: 6px; max-width: 120mm">
+          <% tests.each.with_index(1) do |t, i|%>
+          <% disc = @discs.select { |disc| disc[:id].eql? t[:id] }.first%>
+          <% if disc.present?%>
+              <tr style="height: 7mm">
+                <td style="width: 7mm; padding: 4px"><%= i %></td>
+                <td style="width: 29mm; padding: 4px"><%= disc[:value] %></td>
+                <td style="width: 15mm; padding: 4px"><%= disc[:hours]%></td>
+                <td style="width: 13mm; padding: 4px"><%= marks.select { |mark| mark[:id].eql? disc[:id] }.first[:mark] %></td>
+                <td style="width: 15mm; padding: 4px"><%= disc[:date]%></td>
+                <td style="width: 21mm; padding: 4px">&nbsp;</td>
+                <td style="width: 20mm; padding: 4px"><%= disc[:teacher].present? ? disc[:teacher] : marks.select { |mark| mark[:id].eql? disc[:id] }.first[:teacher]%></td>
+              </tr>
+            <% end%>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  <%end%>
+<% end %>

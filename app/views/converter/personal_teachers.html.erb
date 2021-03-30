@@ -1,0 +1,24 @@
+<h1>Personal teachers</h1>
+<p>Type in names of personal teachers for each student</p>
+
+<% if @discs.present? %>
+  <%= form_with url: converter_convert_path, local: true do |form| %>
+    <%= form.hidden_field :discs, value: JSON.generate(@discs) %>
+    <%= form.hidden_field :students, value: JSON.generate(@students) %>
+    <% @personals.each do |disc| %>
+      <h2><%= disc[:value] %></h2>
+      <% @students.each do |student| %>
+        <div class="row">
+          <div class="col">
+            <strong><%= student[:name]%></strong>
+          </div>
+          <div class="col">
+            <%= form.label "#{disc[:id]}_#{student[:uuid]}".to_sym, 'Name', class:"form-label"%>
+            <%= form.text_field "#{disc[:id]}_#{student[:uuid]}".to_sym, class: "form-control"%>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+    <div class="text-center"><%= form.submit "Submit", class: "btn btn-primary centered" %></div>
+  <% end %>
+<% end %>

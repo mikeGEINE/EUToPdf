@@ -10,6 +10,16 @@
   </head>
 
   <body>
-    <%= yield %>
+    <div class="container">
+      <% if notice %>
+        <p class="alert alert-primary"><%= notice %></p>
+      <% end %>
+      <% if alert %>
+        <p class="alert alert-danger"><%= alert %></p> 
+      <% end %>
+      <div class="col-10 mx-auto">
+        <%= yield %>
+      </div>
+    </div>
   </body>
 </html>

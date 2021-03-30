@@ -1,0 +1,27 @@
+<h1>Choose electives</h1>
+<p>Choose one of the elective courses for each student</p>
+
+<% if @discs.present? %>
+  <%= form_with url: converter_personal_teachers_path, local: true do |form| %>
+    <%= form.hidden_field :discs, value: JSON.generate(@discs) %>
+    <%= form.hidden_field :students, value: JSON.generate(@students) %>
+    <% (0...@electives.count).each do |i| %>
+      <h2><%= @electives[i].map { |disc| disc[:value] }.join(' / ') %></h2>
+      <% @students.each do |student| %>
+        <div class="row">
+          <div class="col">
+            <strong><%= student[:name]%></strong>
+          </div>
+          <% @electives[i].each do |disc| %>
+            <div class="col form-check">
+              <%= form.radio_button "#{i}_#{student[:uuid]}".to_sym, disc[:id], class: "form-check-input"%>
+              <%= form.label "#{i}_#{student[:uuid]}".to_sym, disc[:value], class:"form-check-label"%>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+    <div class="text-center"><%= form.submit "Submit", class: "btn btn-primary centered" %></div>
+  <% end %>
+<% end %>
+

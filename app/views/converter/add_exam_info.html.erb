@@ -1,0 +1,23 @@
+<h1>Add exam info</h1>
+<p>Add info about teacher, exam date and hours of the discipline. If students have personal teachers at a certain discipline, leave the corresponding 'teacher' field empty.</p>
+<% if @discs.present? %>
+  <%= form_with url: converter_choose_electives_path, local: true do |form| %>
+    <%= form.hidden_field :discs, value: JSON.generate(@discs) %>
+    <%= form.hidden_field :students, value: JSON.generate(@students) %>
+    <% @discs.each do |disc| %>
+      <%= form.label disc[:value], class:"form-label"%>
+      <div class="row">
+        <div class="col">
+          <%= form.text_field (disc[:id]+'_teach').to_sym, placeholder: "Input teacher\'s name", class: "form-control"%>
+        </div>
+        <div class="col">
+          <%= form.text_field (disc[:id]+'_date').to_sym, placeholder: "Input exam\'s date", class: "form-control"%>
+        </div>
+        <div class="col">
+          <%= form.text_field (disc[:id]+'_hours').to_sym, placeholder: "Input hours", class: "form-control"%>
+        </div>
+      </div>
+    <% end%>
+    <div class="text-center"><%= form.submit "Submit", class: "btn btn-primary centered" %></div>
+  <% end %>
+<% end %>
