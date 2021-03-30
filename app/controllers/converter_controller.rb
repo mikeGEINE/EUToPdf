@@ -3,7 +3,6 @@
 require 'dry/monads'
 class ConverterController < ApplicationController
   before_action :class_params
-  
   include Dry::Monads[:maybe, :result, :try, :do]
 
   def new 

@@ -1,5 +1,5 @@
-<h1>Converter#add_exam_info</h1>
-<p>Find me in app/views/converter/add_exam_info.html.erb</p>
+<h1>Add exam info</h1>
+<p>Add info about teacher, exam date and hours of the discipline. If students have personal teachers at a certain discipline, leave the corresponding 'teacher' field empty.</p>
 <% if @discs.present? %>
   <%= form_with url: converter_choose_electives_path, local: true do |form| %>
     <%= form.hidden_field :discs, value: JSON.generate(@discs) %>
