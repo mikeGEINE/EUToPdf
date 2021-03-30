@@ -1,24 +1,6 @@
-# README
+# EU to PDF
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a simple app which allows to convert semester results table from [Electronic University](eu.bmstu.ru) into separated tabes for each student in a printable way. 
+Simply load html file, add some info for each discipline and get printable page. The app supports elective courses and courses with personal teachers for students.
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Enjoy!
