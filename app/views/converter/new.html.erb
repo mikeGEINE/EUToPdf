@@ -1,5 +1,6 @@
 <h1>EU to PDF</h1>
-<p>Upload a page with semester results from eu.bmstu.ru</p>
+<p>Upload a page with semester results from eu.bmstu.ru.</p>
+<p>This app supports elective courses, courses with personal teachers and filtering of unsatisfactory marks.</p>
 
 <%= form_with url: converter_add_exam_info_path, multipart: true, local: true do |form| %>
   <%= form.file_field :file, class: "form-control" %>
