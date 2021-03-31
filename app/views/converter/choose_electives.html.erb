@@ -15,7 +15,7 @@
           <% @electives[i].each do |disc| %>
             <div class="col form-check">
               <%= form.radio_button "#{i}_#{student[:uuid]}".to_sym, disc[:id], class: "form-check-input"%>
-              <%= form.label "#{i}_#{student[:uuid]}".to_sym, disc[:value], class:"form-check-label"%>
+              <%= form.label "#{i}_#{student[:uuid]}_#{disc[:id]}".to_sym, disc[:value], class:"form-check-label"%>
             </div>
           <% end %>
         </div>

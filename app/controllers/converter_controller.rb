@@ -46,6 +46,7 @@ class ConverterController < ApplicationController
   def convert
     if request.post?
       bind_personals
+      filter_marks
     else
       flash[:alert] = 'You should upload a correct page from EU first!'
     end
@@ -137,4 +138,16 @@ class ConverterController < ApplicationController
       end
     end
   end
+
+  def filter_marks
+    @students.each do |student|
+      student[:marks] = student[:marks].select { |i| %w[НА Нзч Я Неуд].exclude? i[:mark] }
+    end
+  end
+
+  def filter_discs(student)
+    appl_discs = student[:marks].map { |mark| mark[:id] }
+    @discs.select { |disc| appl_discs.include? disc[:id] }
+  end
+  helper_method :filter_discs
 end

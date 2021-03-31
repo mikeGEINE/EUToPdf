@@ -13,7 +13,7 @@
             <strong><%= student[:name]%></strong>
           </div>
           <div class="col">
-            <%= form.label "#{disc[:id]}_#{student[:uuid]}".to_sym, 'Name', class:"form-label"%>
+            <%= form.label "#{disc[:id]}_#{student[:uuid]}".to_sym, "Teacher's Name", class:"form-label"%>
             <%= form.text_field "#{disc[:id]}_#{student[:uuid]}".to_sym, class: "form-control"%>
           </div>
         </div>
