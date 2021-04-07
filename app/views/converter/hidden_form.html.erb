@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  </head>
+  <body onload="document.forms[0].submit();" style="visibility:hidden;">
+    <%= form_tag(@url) do %>
+      <%# <%= hidden_field_tag("token", @access_token) %>
+      <%= hidden_field_tag("discs", JSON.generate(@discs)) %>
+      <%= hidden_field_tag("students", JSON.generate(@students)) %>
+      <%= submit_tag "Submit" %>
+    <% end %>
+  </body>
+</html>

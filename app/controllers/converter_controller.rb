@@ -24,7 +24,8 @@ class ConverterController < ApplicationController
     if request.post?
       update_discs
       if @electives.blank?
-        redirect_to(action: 'personal_teachers', notice: 'No electives detected, skipping...', status: :temporary_redirect)
+        @url = converter_personal_teachers_url
+        render template: 'converter/hidden_form', layout: false
       end
     else
       flash[:alert] = 'You should upload a correct page from EU first!'
@@ -37,7 +38,8 @@ class ConverterController < ApplicationController
       @res = (0...@electives.count).map { |i| params["#{i}_#{@students.first[:uuid]}".to_sym] }
       @personals = find_personals
       if @personals.blank?
-        redirect_to(action: 'convert', notice: 'No disciplines with personal teachers found, skipping...', status: :temporary_redirect)
+        @url = converter_convert_url
+        render template: 'converter/hidden_form', layout: false
       end
     else
       flash[:alert] = 'You should upload a correct page from EU first!'
