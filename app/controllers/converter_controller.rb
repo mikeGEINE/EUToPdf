@@ -4,6 +4,7 @@ require 'dry/monads'
 class ConverterController < ApplicationController
   before_action :class_params
   include Dry::Monads[:maybe, :result, :try, :do]
+  skip_before_action :verify_authenticity_token, only: %i[personal_teachers]
 
   def new 
   end
@@ -23,7 +24,7 @@ class ConverterController < ApplicationController
     if request.post?
       update_discs
       if @electives.blank?
-        redirect_to(action: 'personal_teachers', notice: 'No electives detected, skipping...')
+        redirect_to(action: 'personal_teachers', notice: 'No electives detected, skipping...', status: :temporary_redirect)
       end
     else
       flash[:alert] = 'You should upload a correct page from EU first!'
@@ -36,7 +37,7 @@ class ConverterController < ApplicationController
       @res = (0...@electives.count).map { |i| params["#{i}_#{@students.first[:uuid]}".to_sym] }
       @personals = find_personals
       if @personals.blank?
-        redirect_to(action: 'convert', notice: 'No disciplines with personal teachers found, skipping...')
+        redirect_to(action: 'convert', notice: 'No disciplines with personal teachers found, skipping...', status: :temporary_redirect)
       end
     else
       flash[:alert] = 'You should upload a correct page from EU first!'
@@ -124,7 +125,10 @@ class ConverterController < ApplicationController
 
   def find_personals
     @discs.select do |disc|
-      disc[:teacher].empty? || disc[:teacher].nil?
+      Maybe(disc[:teacher]).to_result.either(
+        ->(str) { str.empty? },
+        ->(_) { true }
+      )
     end
   end
 
